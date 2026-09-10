@@ -25,6 +25,7 @@
 | Consultas e relatórios (`CONSBENF`, `RELPGT`, `BATCHREL`) não formam contexto próprio | Só leem, e leem de contextos diferentes: `RELPGT -->\|READ\| PAYMENT` e `RELPGT -->\|FIND\| BENEFIC` | Viram modelos de leitura dentro dos contextos 1, 3 e 5 |
 | Primeira feature do Estágio 2 é `001-benefit-calculation`, no contexto 3 | Maior densidade de regras confirmadas e maior valor de negócio | [`specs/001-benefit-calculation/spec.md`](../specs/001-benefit-calculation/spec.md) com 14 requisitos |
 | Somente regras **Confirmada** viraram requisito; **Inferida** e **Mistério** ficaram de fora | 133 regras candidatas, 27 confirmadas ([`business-rules-catalog.md`](../01-archaeology/business-rules-catalog.md)) | Nenhum requisito sem `source_legacy:` conferido |
+| Grupo periódico de descontos mapeado como `@OneToMany` com entidade `PaymentDiscount` | Mais gerenciável e auditável isoladamente; iteração por ocorrência já existe em `CALCDSCT.NSP:113-174` | [`ADR-001`](ADRs/adr-001-payment-discount-jpa-mapping.md); afeta REQ-006, REQ-007, REQ-008 e REQ-014 |
 
 ### Adiado nesta feature
 
