@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94
+    container_name: sifap-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-sifap}
+      POSTGRES_USER: ${POSTGRES_USER:-sifap}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sifap_local}
+    ports:
+      - "5432:5432"
+    volumes:
+      - sifap-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sifap} -d ${POSTGRES_DB:-sifap}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  sifap-db-data:
