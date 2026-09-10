@@ -214,11 +214,12 @@ Legenda: seta cheia = chamada em processo com retorno de domínio; seta tracejad
 
 ## Decisões candidatas a ADR
 
-| # | Decisão | Por que precisa de ADR |
-|---|---|---|
-| 1 | Propriedade da situação do pagamento entre Pagamento de Benefícios e Conciliação Bancária | Três vocabulários divergentes para o mesmo campo (`PAYMENT.ddm:73-75`, `BATCHCON.NSP:204-231`, `BATCHREL.NSP:177-190`) |
-| 2 | Mapeamento dos grupos periódicos Adabas (dependentes 1:10, descontos 1:8, faixas 1:5) para JPA | `@ElementCollection`, `@OneToMany` e coluna JSONB são todas viáveis, com trade-offs distintos |
-| 3 | Estratégia de coexistência com o legado (Strangler Fig) por contexto | Define qual contexto migra primeiro e como a base histórica de 612 milhões de pagamentos é lida |
+| # | Decisão | Por que precisa de ADR | Situação |
+|---|---|---|---|
+| 1 | Propriedade da situação do pagamento entre Pagamento de Benefícios e Conciliação Bancária | Três vocabulários divergentes para o mesmo campo (`PAYMENT.ddm:73-75`, `BATCHCON.NSP:204-231`, `BATCHREL.NSP:177-190`) | Candidata — depende da questão em aberto sobre o domínio da situação |
+| 2 | Mapeamento dos grupos periódicos Adabas (dependentes 1:10, descontos 1:8, faixas 1:5) para JPA | `@ElementCollection`, `@OneToMany` e coluna JSONB são todas viáveis, com trade-offs distintos | Decidida para o grupo de descontos em [`ADR-001`](ADRs/adr-001-payment-discount-jpa-mapping.md); dependentes e faixas seguem candidatos |
+| 3 | Estratégia de coexistência com o legado (Strangler Fig) por contexto | Define qual contexto migra primeiro e como a base histórica de 612 milhões de pagamentos é lida | Candidata — bloqueada por P4b, ver [`ADR-002`](ADRs/adr-002-payment-uniqueness-cpf-competence.md) |
+| 4 | Quantos pagamentos a folha nova gera por CPF e competência | Guarda de reentrância e restrição de unicidade são decisões distintas, e só a primeira é fundamentada em requisito | Decidida em [`ADR-002`](ADRs/adr-002-payment-uniqueness-cpf-competence.md) para o processamento novo (P4a); carga histórica (P4b) aberta |
 
 ---
 
@@ -228,7 +229,7 @@ Nenhuma foi respondida por esta análise. Permanecem com status `aberta` em [`my
 
 | Questão | Contexto afetado |
 |---|---|
-| Duplicidade de pagamento por CPF e competência (`BATCHPGT.NSP:381`, `:488`) | 3. Pagamento de Benefícios |
+| Duplicidade de pagamento por CPF e competência (`BATCHPGT.NSP:381`, `:488`) — dividida em **P4a**, processamento novo, decidida em [`ADR-002`](ADRs/adr-002-payment-uniqueness-cpf-competence.md), e **P4b**, carga histórica, aberta | 3. Pagamento de Benefícios |
 | Renda familiar total usada onde a documentação exige per capita (`CALCBENF.NSN:174`) | 3. Pagamento de Benefícios (lê do contexto 1) |
 | Código de macrorregião indexando tabela de 27 unidades federativas (`CALCBENF.NSN:200`) | 3. Pagamento de Benefícios (lê do contexto 2) |
 | Óbito e bloqueios judiciais não consultados antes do pagamento (`BATCHPGT.NSP:263`) | 1. Cadastro e 3. Pagamento |

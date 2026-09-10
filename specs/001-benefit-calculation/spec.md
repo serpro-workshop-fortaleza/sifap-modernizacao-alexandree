@@ -203,6 +203,9 @@ Todas as origens foram abertas e conferidas nas linhas indicadas. Nenhum requisi
 
 Reproduzidas de [`mysteries-found.md`](../../01-archaeology/mysteries-found.md) **sem alteração de status**. Nenhuma foi respondida nesta especificação e nenhuma virou requisito. Os IDs canônicos permanecem pendentes de atribuição pela dupla.
 
+> [!NOTE]
+> A primeira questão da tabela continua aberta. O que [`ADR-002`](../../02-modern-spec/ADRs/adr-002-payment-uniqueness-cpf-competence.md) decide é apenas quantos pagamentos a folha **nova** gera por CPF e competência (um), o que não explica nem legitima a dupla gravação legada. O tratamento do histórico já gravado permanece com a Coordenação de Benefícios.
+
 | ID | Questão em aberto | Evidência (`path:line`) | Impacto | Hipótese (não confirmada) | Pessoa/área responsável | Status |
 |---|---|---|---|---|---|---|
 | `SIFAP-M-__` | Por que a folha grava dois pagamentos para o mesmo CPF e período, um pelo subprograma chamado e outro pelo cálculo inline da própria folha? | `01-archaeology/legacy-sifap/natural-programs/BATCHPGT.NSP:L381`, `BATCHPGT.NSP:L488`, `CALCBENF.NSN:L319` | Define se a migração reproduz um ou dois registros por competência e como tratar o histórico já gravado | Não confirmada: o comentário `BATCHPGT.NSP:L363-367` diz "REMAINS ACTIVE PENDING A DECISION - TICKET 6622/2011 OPEN" | Coordenação de Benefícios, conforme `BATCHPGT.NSP:L365` | aberta |

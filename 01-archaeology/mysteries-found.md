@@ -48,6 +48,9 @@ Perguntas levantadas durante `/extract-business-rules` e `/map-dependencies`, co
 | `SIFAP-M-__` | Por que a conciliação bancária nunca recebeu JCL e depende de execução manual desde 2000? | `01-archaeology/legacy-sifap/natural-programs/BATCHCON.NSP:L14`, `01-archaeology/legacy-sifap/natural-programs/SIFAPJ01.jcl:L1`, `01-archaeology/legacy-sifap/natural-programs/SIFAPJ02.jcl:L1` | Determina se a conciliação entra como job agendado ou processo sob demanda na arquitetura nova | Não confirmada: o cabeçalho registra "TICKET 8110/2017 - DEDICATED JCL REQUESTED", em aberto | A definir pela dupla | aberta |
 | `SIFAP-M-__` | Por que um retorno bancário com código desconhecido é contado como conciliado e não entra nas pendências do código de retorno do job? | `01-archaeology/legacy-sifap/natural-programs/BATCHCON.NSP:L203`, `01-archaeology/legacy-sifap/natural-programs/BATCHCON.NSP:L227`, `01-archaeology/legacy-sifap/natural-programs/BATCHCON.NSP:L290` | Pagamento sem situação atualizada fica invisível na conferência e na migração de saldos | Não confirmada: o contador é incrementado antes do desvio por código de retorno | A definir pela dupla | aberta |
 
+> [!NOTE]
+> A questão da dupla gravação (`BATCHPGT.NSP:L381`, `L488`) continua **aberta** e não foi respondida. O Estágio 2 apenas separou dela uma decisão de projeto do sistema novo — quantos pagamentos a folha nova gera por CPF e competência —, registrada em [`ADR-002`](../02-modern-spec/ADRs/adr-002-payment-uniqueness-cpf-competence.md). O tratamento do histórico já gravado permanece com a Coordenação de Benefícios.
+
 ### Domínio Cálculo — `CALCBENF`, `CALCCORR` (faixa `SIFAP-M-09` … `SIFAP-M-12`)
 
 | ID | Questão em aberto | Evidência (`path:line`) | Impacto | Hipótese (não confirmada) | Pessoa/área responsável | Status |

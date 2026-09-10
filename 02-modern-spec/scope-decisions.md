@@ -26,6 +26,7 @@
 | Primeira feature do Estágio 2 é `001-benefit-calculation`, no contexto 3 | Maior densidade de regras confirmadas e maior valor de negócio | [`specs/001-benefit-calculation/spec.md`](../specs/001-benefit-calculation/spec.md) com 14 requisitos |
 | Somente regras **Confirmada** viraram requisito; **Inferida** e **Mistério** ficaram de fora | 133 regras candidatas, 27 confirmadas ([`business-rules-catalog.md`](../01-archaeology/business-rules-catalog.md)) | Nenhum requisito sem `source_legacy:` conferido |
 | Grupo periódico de descontos mapeado como `@OneToMany` com entidade `PaymentDiscount` | Mais gerenciável e auditável isoladamente; iteração por ocorrência já existe em `CALCDSCT.NSP:113-174` | [`ADR-001`](ADRs/adr-001-payment-discount-jpa-mapping.md); afeta REQ-006, REQ-007, REQ-008 e REQ-014 |
+| A folha nova gera no máximo um pagamento por CPF e competência (P4a) | Nenhum requisito pede o segundo pagamento; a dupla gravação legada é Mistério sob chamado aberto (`BATCHPGT.NSP:L363-367`, TICKET 6622/2011) | [`ADR-002`](ADRs/adr-002-payment-uniqueness-cpf-competence.md); REQ-010 continua atendido pela consulta prévia, e o índice único fica em migração revertível |
 
 ### Adiado nesta feature
 
@@ -47,7 +48,7 @@
 | Qual renda é comparada com o teto do programa em REQ-003: familiar total ou per capita? | `VALELEG.NSN:174-180`, `BENEFIC.ddm:L96` | SENARC/CGPB |
 | REQ-007 e REQ-008 valem durante a geração da folha ou apenas em execução avulsa de descontos? | `BATCHPGT.NSP:L20`, `CALCDSCT.NSP:L74` (sem chamador no corpus) | A definir pela dupla |
 | Qual é o domínio real da situação do pagamento, necessário antes de projetar a máquina de estados? | `PAYMENT.ddm:73-75`, `CALCBENF.NSN:308-320`, `BATCHREL.NSP:177-190` | A definir pela dupla |
-| A folha deve gerar um ou dois pagamentos por CPF e competência? | `BATCHPGT.NSP:L381`, `L488` (TICKET 6622/2011) | Coordenação de Benefícios |
+| A base histórica migrada de `PAYMENT` admite pares CPF/competência duplicados? (P4b — o processamento novo já está decidido em [`ADR-002`](ADRs/adr-002-payment-uniqueness-cpf-competence.md)) | `BATCHPGT.NSP:L381`, `L488` (TICKET 6622/2011) | Coordenação de Benefícios |
 
 ---
 
