@@ -9,6 +9,9 @@ on:
     paths:
       - ".github/workflows/spec-quality.yml"
       - ".github/scripts/**"
+      # Sem esta linha, um PR que só mexe em hook não dispara o job copilot-primitives,
+      # que é justamente quem valida o esquema do hook e o bit de execução do script.
+      - ".github/hooks/**"
       - "**.md"
       - "specs/**"
       - "docs/**"

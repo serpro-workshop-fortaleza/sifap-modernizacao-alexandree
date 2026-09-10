@@ -54,6 +54,9 @@ As 5 duplas trabalham em paralelo, cada uma responsável por 3 programas Natural
 | [`discovery-report.md`](discovery-report.md) | Relatório de descoberta que consolida as evidências do estágio. |
 | [`mysteries-checklist.md`](mysteries-checklist.md) | Checklist de rastreabilidade das questões em aberto. |
 | [`mysteries-found.md`](mysteries-found.md) | Registro detalhado das questões em aberto, com evidência e responsável. |
+| [`rules/`](rules/) | Shards de regras gerados por [`/fanout-rules`](../.github/prompts/stage-archaeologist-orchestrator-fanout-rules.prompt.md), um arquivo JSON por programa. |
+
+Há dois caminhos para extrair regras. [`/extract-business-rules`](../.github/prompts/stage-archaeologist-extract-business-rules.prompt.md) lê um programa por vez e é o caminho padrão. [`/fanout-rules`](../.github/prompts/stage-archaeologist-orchestrator-fanout-rules.prompt.md) processa um lote em paralelo, com um subagente por programa escrevendo em seu próprio shard, e consolida o resultado no catálogo em um passo serial. A justificativa está no [ADR-0003](../docs/adr/0003-parallel-business-rule-extraction.md).
 
 O código legado está em [`legacy-sifap/`](legacy-sifap/) (compartilhado pelo kit).
 

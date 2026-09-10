@@ -58,14 +58,15 @@ flowchart LR
 
 ## Primitivas do Copilot em `.github/`
 
-O kit traz quatro tipos de primitiva do Copilot. Cada uma tem um índice legível por humanos; o próprio Copilot carrega os arquivos subjacentes automaticamente.
+O kit traz cinco tipos de primitiva do Copilot. Cada uma tem um índice legível por humanos; o próprio Copilot carrega os arquivos subjacentes automaticamente.
 
 | Primitiva | Índice | O que contém |
 |---|---|---|
 | Instruções | [`.github/instructions/README.md`](.github/instructions/README.md) | Regras `*.instructions.md` com escopo por caminho, aplicadas pelo glob `applyTo` |
 | Prompts | [`.github/prompts/README.md`](.github/prompts/README.md) | Tarefas `*.prompt.md` em slash command para os agentes de estágio e de persona |
 | Skills | [`.github/skills/README.md`](.github/skills/README.md) | 42 capacidades `SKILL.md` carregadas automaticamente e casadas pela `description` |
-| Agentes | [`.github/agents/README.md`](.github/agents/README.md) | 17 agentes invocáveis com `@` em duas camadas (estágio + persona) |
+| Agentes | [`.github/agents/README.md`](.github/agents/README.md) | 18 agentes invocáveis com `@` em duas camadas (estágio + persona), mais a camada de orquestração |
+| Hooks | [`.github/hooks/rules-crosscheck.json`](.github/hooks/rules-crosscheck.json) | Gatilhos `*.json` planos que executam verificações em eventos do agente; o esquema está em [`PRIMITIVE-STANDARD.md`](.github/PRIMITIVE-STANDARD.md) |
 
 ---
 

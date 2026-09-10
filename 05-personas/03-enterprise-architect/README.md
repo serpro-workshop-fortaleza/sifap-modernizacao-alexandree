@@ -36,6 +36,9 @@ O Enterprise Architect enxerga o sistema dentro de seu ecossistema. No SIFAP (Si
 | `.github/instructions/infrastructure.instructions.md` | Instruções | Convenções de IaC |
 | `hooks.json` | Hooks | Bloqueios de edição para `.specify/memory/constitution.md` |
 
+> [!NOTE]
+> Este `hooks.json` é ilustrativo: o Copilot só descobre hooks em `.github/hooks/<nome>.json`, no formato definido em [`PRIMITIVE-STANDARD.md`](../../.github/PRIMITIVE-STANDARD.md). Veja [`rules-crosscheck.json`](../../.github/hooks/rules-crosscheck.json) para um hook real.
+
 ---
 
 ## Onde ficam os artefatos

@@ -35,6 +35,7 @@ Não escreva um ADR para nomes de variáveis, configurações de formatação ou
 | 0000 | [Modelo](0000-template.md) | template | 2026-04-29 |
 | 0001 | [Fonte única de verdade para instruções de agentes](0001-agent-instructions-single-source-of-truth.md) | accepted | 2026-08-17 |
 | 0002 | [Portal de documentação trilíngue com Astro](0002-trilingual-documentation-portal.md) | accepted | 2026-09-07 |
+| 0003 | [Extração paralela de regras de negócio com shard por programa](0003-parallel-business-rule-extraction.md) | accepted | 2026-09-10 |
 
 > [!NOTE]
 > Adicione novos ADRs a esta tabela quando forem criados, primeiro com o status `proposed` e depois `accepted`, após o acordo do time.

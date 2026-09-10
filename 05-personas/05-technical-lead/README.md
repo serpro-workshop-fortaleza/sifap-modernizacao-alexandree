@@ -34,6 +34,9 @@ O Technical Lead conecta a arquitetura ao código cotidiano. Esse papel define p
 | `.github/prompts/persona-technical-lead-audit-context.prompt.md` | Prompt | `/audit-context` |
 | `hooks.json` | Hooks | Escopo, lint e testes |
 
+> [!NOTE]
+> Este `hooks.json` é ilustrativo: o Copilot só descobre hooks em `.github/hooks/<nome>.json`, no formato definido em [`PRIMITIVE-STANDARD.md`](../../.github/PRIMITIVE-STANDARD.md). Veja [`rules-crosscheck.json`](../../.github/hooks/rules-crosscheck.json) para um hook real.
+
 ---
 
 ## Onde ficam os artefatos

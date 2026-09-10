@@ -15,7 +15,8 @@ Este diretório contém os arquivos de prompt do GitHub Copilot para a imersão.
 
 | Agente | Arquivos |
 | --- | --- |
-| `archaeologist` | `stage-archaeologist-*.prompt.md` |
+| `archaeologist` | `stage-archaeologist-*.prompt.md`, exceto o sufixo `-orchestrator-` |
+| `archaeologist-orchestrator` | `stage-archaeologist-orchestrator-*.prompt.md` |
 | `architect` | `stage-architect-*.prompt.md` |
 | `builder` | `stage-builder-*.prompt.md` |
 | `evolution` | `stage-evolution-*.prompt.md` |

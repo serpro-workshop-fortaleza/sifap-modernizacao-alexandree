@@ -108,7 +108,8 @@ Arquivo: `skills/<dir>/SKILL.md`. Somente `name` e `description` são válidas.
 Um hook é um arquivo JSON plano em `hooks/<name>.json`. Um `<name>/hooks.json` aninhado **nunca é descoberto** nem executado (falha nº 3). O script manipulador fica em `hooks/<name>/` e deve ser executável.
 
 - `version` deve ser `1`; `hooks` mapeia um evento para uma lista de manipuladores.
-- Os eventos incluem `sessionStart`, `sessionEnd`, `userPromptSubmitted`, `preToolUse` e `postToolUse`. O `type` de um manipulador é `command`, `http` ou `prompt`.
+- Os eventos incluem `sessionStart`, `sessionEnd`, `userPromptSubmitted`, `preToolUse` e `postToolUse`. Os eventos de subagente `subagentStart` e `subagentStop` também são aceitos e servem a fluxos de orquestração, mas não estão documentados nas superfícies do Copilot; trate-os como complemento a um evento estável, nunca como único gatilho. A lista completa aceita está em `HOOK_EVENTS`, em [`scripts/validate-copilot-primitives.py`](scripts/validate-copilot-primitives.py). O `type` de um manipulador é `command`, `http` ou `prompt`.
+- Um exemplo real do repositório: [`hooks/rules-crosscheck.json`](hooks/rules-crosscheck.json). Os `hooks.json` em `05-personas/` são ilustrativos, usam um esquema divergente e não são descobertos.
 
 Um hook `preToolUse` bloqueia uma chamada de ferramenta ao escrever este objeto em stdout:
 

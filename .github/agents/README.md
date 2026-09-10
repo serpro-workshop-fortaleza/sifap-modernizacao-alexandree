@@ -1,6 +1,6 @@
 # Índice de agentes
 
-Este diretório contém os agentes personalizados do GitHub Copilot para a imersão: **17** no total, cada um em seu próprio `<name>.agent.md`.
+Este diretório contém os agentes personalizados do GitHub Copilot para a imersão: **18** no total, cada um em seu próprio `<name>.agent.md`.
 
 > [!NOTE]
 > O Copilot descobre arquivos `*.agent.md` em `.github/agents/`. Invoque um agente por seu `name` com `@<name>` (por exemplo, `@archaeologist`). O `name` também vincula prompts: um arquivo `*.prompt.md` seleciona seu agente pela chave `agent:` do frontmatter. Portanto, o ID do agente é um contrato, não um rótulo.
@@ -10,7 +10,7 @@ O kit usa **duas camadas de agentes**. Este é o modelo mental central, por isso
 - **Agentes de estágio (4)**: um por estágio da imersão, usados sequencialmente durante o dia.
 - **Agentes de persona (10)**: um por papel da equipe, usados pela dupla responsável por esse papel.
 
-Outros três **agentes especialistas** ficam fora dessas duas camadas. Eles aprofundam trabalhos específicos e aparecem ao fim.
+Outros quatro agentes ficam fora dessas duas camadas: um **agente de orquestração**, que paraleliza um passo de estágio despachando subagentes, e três **agentes especialistas**, que aprofundam trabalhos específicos. Ambos aparecem ao fim.
 
 ## Agentes de estágio
 
@@ -40,6 +40,16 @@ Dez agentes, um por papel da equipe. O agente [`implementer`](implementer.agent.
 | [`devops-engineer`](devops-engineer.agent.md) | `@devops-engineer` | 5 | Assistente do Engenheiro DevOps para esteiras do GitHub Actions, IaC Terraform, compilações de contêiner, observabilidade e análise de incidentes |
 | [`tech-writer`](tech-writer.agent.md) | `@tech-writer` | 5 | Assistente do Redator Técnico para documentação de API, guias operacionais, ADRs, CODEMAP e conteúdo no estilo Diátaxis com detecção de desvios |
 
+## Agente de orquestração
+
+Um agente que não executa trabalho de estágio: ele **particiona** um passo de estágio e despacha subagentes em paralelo, declarando em `agents:` quem pode despachar. Um passo só vale a pena orquestrar quando as unidades de trabalho são independentes na leitura e têm destinos de escrita disjuntos.
+
+| Agente | Invocação | Despacha | Prompts vinculados | Descrição |
+| --- | --- | --- | --- | --- |
+| [`archaeologist-orchestrator`](archaeologist-orchestrator.agent.md) | `@archaeologist-orchestrator` | `archaeologist` | 2 | Agente de orquestração do Estágio 1: particiona a extração de regras de negócio por membro Natural, despacha subagentes em paralelo e consolida os shards sem escrita concorrente |
+
+O hook [`rules-crosscheck.json`](../hooks/rules-crosscheck.json) acompanha este agente: ele cruza os shards quando um subagente termina. É o primeiro hook real do repositório; os `hooks.json` em `05-personas/` são ilustrativos, usam um esquema divergente e não são descobertos pelo Copilot.
+
 ## Agentes especialistas
 
 Três especialistas que não pertencem à camada de estágio nem à de persona. Nenhum possui prompts; invoque-os diretamente com `@<name>`.
@@ -52,9 +62,9 @@ Três especialistas que não pertencem à camada de estágio nem à de persona. 
 
 ## Responsabilidade pelos prompts
 
-Os 59 prompts em [`../prompts/`](../prompts/) vinculam-se a um agente por sua chave `agent:`:
+Os 61 prompts em [`../prompts/`](../prompts/) vinculam-se a um agente por sua chave `agent:`:
 
-- Todos os **59** se vinculam a um dos **14** agentes nomeados acima (estágio + persona); nenhum prompt permanece no agente genérico integrado `agent: "agent"`. As contagens por agente estão nas colunas **Prompts vinculados** das tabelas.
+- Todos os **61** se vinculam a um dos **15** agentes nomeados acima (estágio, persona e orquestração); nenhum prompt permanece no agente genérico integrado `agent: "agent"`. As contagens por agente estão nas colunas **Prompts vinculados** das tabelas.
 - Os três agentes especialistas (`se-ux-ui-designer`, `expert-react-frontend-engineer`, `java-mcp-expert`) possuem **0** prompts e são invocados diretamente.
 
 Recalcule as contagens com `grep -h '^agent:' ../prompts/*.prompt.md | sort | uniq -c`.

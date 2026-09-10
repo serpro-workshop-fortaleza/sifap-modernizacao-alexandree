@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "hooks": {
+    "subagentStop": [
+      {
+        "type": "command",
+        "description": "Cruza o shard recém-escrito com os demais e regrava 01-archaeology/rules/_conflicts.json",
+        "bash": ".github/hooks/rules-crosscheck/crosscheck.sh",
+        "timeoutSec": 30
+      },
+      {
+        "type": "prompt",
+        "description": "Julga apenas os pares PENDENTE do cruzamento determinístico",
+        "prompt": "Abra 01-archaeology/rules/_conflicts.json. Se o arquivo não existir ou não houver par com verdict PENDENTE, não faça nada e não escreva em nenhum arquivo. Para cada par PENDENTE, leia as duas regras nos shards citados e classifique como CONFLITO (ações incompatíveis para condições que podem coexistir), ESCLARECE (uma regra explica um literal que a outra deixou como mistério), DUPLICATA (mesma regra vista de dois programas) ou INDEPENDENTE (coincidência de nome de campo), sempre citando as duas evidências arquivo:linha. Não reveja os veredictos CONFLITO, ESCLARECE e DUPLICATA já decididos por critério objetivo. Para cada CONFLITO, proponha em conversa a linha de 01-archaeology/mysteries-found.md com as sete colunas e Status igual a aberta; nunca edite mysteries-found.md nem altere o status de um mistério existente. Nunca promova uma regra inferida a confirmada."
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "description": "Rede de segurança: subagentStop não está documentado no PRIMITIVE-STANDARD e pode não disparar em toda versão do editor",
+        "bash": ".github/hooks/rules-crosscheck/crosscheck.sh",
+        "timeoutSec": 30
+      }
+    ]
+  }
+}
