@@ -9,7 +9,7 @@
 | **Público-alvo** | Dupla 2 (Arquiteto de Software + Especialista em Requisitos) |
 | **Entrada** | [`discovery-report.md`](../01-archaeology/discovery-report.md), [`dependency-map.md`](../01-archaeology/dependency-map.md), [`business-rules-catalog.md`](../01-archaeology/business-rules-catalog.md) |
 | **Estágio** | Estágio 2 — Especificação moderna |
-| **Status** | Recomendação do `@architect` — **pendente de ratificação pela equipe** |
+| **Status** | **Aceito pela equipe** em 2026-09-10, com os dois ajustes propostos |
 | **Data** | 2026-09-10 |
 
 > [!IMPORTANT]
@@ -240,9 +240,10 @@ Nenhuma foi respondida por esta análise. Permanecem com status `aberta` em [`my
 
 ## Ratificação da equipe
 
-- Revisado por: <!-- preencher -->
-- Data: <!-- preencher: AAAA-MM-DD -->
-- Decisão: <!-- preencher: aceita como está / aceita com alterações (descrever) -->
+- Revisado por: Equipe SIFAP 2.0 — Dupla 2 (Arquiteto de Software + Especialista em Requisitos)
+- Data: 2026-09-10
+- Decisão: **aceita como está**, incluindo o kernel compartilhado de Validação de Documentos e a propriedade exclusiva de `PAYMENT` pelo contexto de Pagamento de Benefícios
+- Registro: [`scope-decisions.md`](scope-decisions.md)
 
 ---
 
@@ -253,7 +254,7 @@ Nenhuma foi respondida por esta análise. Permanecem com status `aberta` em [`my
 - [x] Entre dois e cinco contextos definidos com nomes de negócio
 - [x] Cada contexto com responsabilidade, dados próprios e interface pública
 - [x] Diagrama Mermaid com relações e caminhos de comunicação
-- [ ] Ratificação da equipe registrada
+- [x] Ratificação da equipe registrada
 
 ---
 
