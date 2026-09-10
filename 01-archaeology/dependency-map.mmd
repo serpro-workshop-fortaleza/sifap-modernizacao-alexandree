@@ -1,0 +1,100 @@
+%%{init: {'theme':'neutral','themeVariables':{'fontFamily':'ui-sans-serif, system-ui, sans-serif','primaryColor':'#F5F5F5','primaryTextColor':'#171717','primaryBorderColor':'#171717','lineColor':'#525252','secondaryColor':'#FFFFFF','tertiaryColor':'#FAFAFA','background':'#FFFFFF'}}}%%
+flowchart TD
+    classDef prog fill:#F5F5F5,stroke:#171717,color:#171717
+    classDef sub fill:#FFFFFF,stroke:#171717,color:#171717,stroke-width:2px
+    classDef copy fill:#FAFAFA,stroke:#A3A3A3,color:#404040
+    classDef data fill:#FFFFFF,stroke:#525252,color:#171717
+    classDef seq fill:#FAFAFA,stroke:#A3A3A3,color:#404040
+
+    JCL1["SIFAPJ01 - folha mensal"]:::prog
+    JCL2["SIFAPJ02 - relatorios"]:::prog
+
+    BATCHPGT["BATCHPGT.NSP"]:::prog
+    BATCHCON["BATCHCON.NSP"]:::prog
+    BATCHREL["BATCHREL.NSP"]:::prog
+    CADBENEF["CADBENEF.NSP"]:::prog
+    CADDEPEN["CADDEPEN.NSP"]:::prog
+    CADPROG["CADPROG.NSP"]:::prog
+    CONSBENF["CONSBENF.NSP"]:::prog
+    CALCCORR["CALCCORR.NSP"]:::prog
+    CALCDSCT["CALCDSCT.NSP"]:::prog
+    VALDOCS["VALDOCS.NSP"]:::prog
+    RELPGT["RELPGT.NSP"]:::prog
+    RELAUDIT["RELAUDIT.NSP"]:::prog
+
+    VALELEG["VALELEG.NSN"]:::sub
+    CALCBENF["CALCBENF.NSN"]:::sub
+    SUBVALCP["SUBVALCP.NSN"]:::sub
+    SUBVALNI["SUBVALNI.NSN"]:::sub
+    VALBENEF["VALBENEF.NSN"]:::sub
+
+    CCAUDIT["CCAUDIT.NSC"]:::copy
+    CCVALCPF["CCVALCPF.NSC"]:::copy
+
+    BENEFIC[("BENEFIC - FNR 150")]:::data
+    SOCPROG[("SOCPROG - FNR 151")]:::data
+    PAYMENT[("PAYMENT - FNR 152")]:::data
+    AUDIT[("AUDIT - FNR 153")]:::data
+
+    WKF01E[/"CMWKF01 - extrato remessa"/]:::seq
+    WKF02[/"CMWKF02 - rejeitados"/]:::seq
+    WKF01R[/"CMWKF01 - retorno CNAB"/]:::seq
+    WKF01A[/"CMWKF01 - copia arquivamento"/]:::seq
+    PRT01[/"CMPRT01 - impressora"/]:::seq
+
+    JCL1 --> BATCHPGT
+    JCL2 --> BATCHREL
+    JCL2 --> RELPGT
+
+    BATCHPGT ==>|CALLNAT| SUBVALCP
+    BATCHPGT ==>|CALLNAT| VALELEG
+    BATCHPGT ==>|CALLNAT| CALCBENF
+    CADBENEF ==>|CALLNAT| SUBVALCP
+    CADBENEF ==>|CALLNAT| SUBVALNI
+    CADBENEF ==>|CALLNAT| VALBENEF
+    CALCCORR ==>|CALLNAT| SUBVALCP
+    CONSBENF ==>|CALLNAT| SUBVALCP
+    VALDOCS ==>|CALLNAT| SUBVALNI
+
+    BATCHPGT -.->|INCLUDE| CCAUDIT
+    BATCHCON -.->|INCLUDE| CCAUDIT
+    CADBENEF -.->|INCLUDE| CCAUDIT
+    CADDEPEN -.->|INCLUDE| CCAUDIT
+    CADPROG -.->|INCLUDE| CCAUDIT
+    CALCCORR -.->|INCLUDE| CCAUDIT
+    CONSBENF -.->|INCLUDE| CCAUDIT
+    CADDEPEN -.->|INCLUDE| CCVALCPF
+    SUBVALCP -.->|INCLUDE| CCVALCPF
+
+    BATCHPGT -->|READ| BENEFIC
+    BATCHPGT -->|FIND| SOCPROG
+    BATCHPGT -->|READ FIND STORE| PAYMENT
+    CALCBENF -->|FIND| BENEFIC
+    CALCBENF -->|FIND| SOCPROG
+    CALCBENF -->|STORE| PAYMENT
+    VALELEG -->|FIND| BENEFIC
+    VALELEG -->|FIND| SOCPROG
+    CALCDSCT -->|FIND| BENEFIC
+    CALCDSCT -->|FIND UPDATE| PAYMENT
+    CALCCORR -->|READ UPDATE| PAYMENT
+    BATCHCON -->|FIND UPDATE| PAYMENT
+    BATCHCON -->|READ STORE| AUDIT
+    BATCHREL -->|READ| PAYMENT
+    BATCHREL -->|FIND| BENEFIC
+    CADBENEF -->|FIND STORE UPDATE| BENEFIC
+    CADDEPEN -->|FIND UPDATE| BENEFIC
+    CADPROG -->|FIND STORE| SOCPROG
+    CONSBENF -->|FIND| BENEFIC
+    CONSBENF -->|READ| PAYMENT
+    RELPGT -->|READ| PAYMENT
+    RELPGT -->|FIND| BENEFIC
+    RELAUDIT -->|READ HISTOGRAM| AUDIT
+    CCAUDIT -->|READ STORE| AUDIT
+
+    BATCHPGT -->|WRITE| WKF01E
+    BATCHPGT -->|WRITE| WKF02
+    WKF01R -->|READ| BATCHCON
+    BATCHREL -->|WRITE| WKF01A
+    BATCHREL --> PRT01
+    RELPGT --> PRT01
+    RELAUDIT --> PRT01
