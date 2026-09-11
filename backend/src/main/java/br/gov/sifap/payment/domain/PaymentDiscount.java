@@ -62,4 +62,8 @@ public class PaymentDiscount {
     public BigDecimal amount() {
         return amount;
     }
+
+    public boolean isJudicial() {
+        return "JD".equals(discountType);
+    }
 }

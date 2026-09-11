@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 
@@ -70,6 +71,25 @@ class PaymentRepositoryTest {
         assertThatThrownBy(() -> payment.addDiscount(new PaymentDiscount("TX", BigDecimal.ONE, null, null)))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Pagamento nao pode possuir mais de 8 descontos");
+    }
+
+    @Test
+    void should_report_existing_payment_for_cpf_and_competence() { // REQ-010
+        assertThat(paymentRepository.existsFor(Cpf.of("12345678909"), Competence.of("202609"))).isFalse();
+
+        paymentRepository.saveAndFlush(payment(1004L));
+
+        assertThat(paymentRepository.existsFor(Cpf.of("12345678909"), Competence.of("202609"))).isTrue();
+    }
+
+    @Test
+    void should_reject_second_payment_for_same_cpf_and_competence() { // questao de projeto P4a, ADR-002
+        paymentRepository.saveAndFlush(payment(1005L));
+
+        // Decisao de projeto, nao REQ-010: o requisito e atendido pela guarda de reentrada acima.
+        // A reversao custa apenas o DROP INDEX da migracao V6.
+        assertThatThrownBy(() -> paymentRepository.saveAndFlush(payment(1006L)))
+                .isInstanceOf(DataIntegrityViolationException.class);
     }
 
     private static Payment payment(long paymentNumber) {

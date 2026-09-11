@@ -88,6 +88,20 @@ jobs:
     if: needs.detect-changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16@sha256:f1c3376c26f2609ab9f29f71f824103fe2fcd8ee0346485cb6122a4f93df6f94
+        env:
+          POSTGRES_DB: sifap
+          POSTGRES_USER: sifap
+          POSTGRES_PASSWORD: sifap_local
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U sifap -d sifap"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
     defaults:
       run:
         shell: bash
@@ -153,42 +167,27 @@ jobs:
           pnpm test --run --coverage
 
   infra:
-    name: Infraestrutura (Terraform)
+    name: Infraestrutura local (Docker Compose)
     needs: detect-changes
     if: needs.detect-changes.outputs.infra == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    defaults:
-      run:
-        shell: bash
-        working-directory: infra
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3
-        with:
-          # Deve ser >= à versão que gravou o arquivo de estado pela última vez. O estado do
-          # Terraform só avança: a versão 1.9.5 não consegue ler um estado gravado pela 1.14.6,
-          # portanto a CI falharia em qualquer comando que carregasse o estado.
-          terraform_version: "1.14.6"
-      - name: Verificar formatação
+      - name: Validar configuração Compose
         run: |
           set -euo pipefail
-          terraform fmt -check -recursive
-      - name: Validar
+          docker compose config --quiet
+      - name: Verificar serviço PostgreSQL
         run: |
           set -euo pipefail
-          # `terraform validate` examina somente o diretório ATUAL. Executá-lo em infra/, que não
-          # contém arquivos .tf raiz, retornava um "Success!" vazio e não validava nada.
-          # Percorra todos os diretórios que realmente declaram Terraform e valide cada um.
-          shopt -s nullglob
-          modules=$(find . -type f -name '*.tf' -not -path '*/.terraform/*' -exec dirname {} \; | sort -u)
-          if [ -z "$modules" ]; then
-            echo "Nenhum módulo Terraform encontrado em infra/" >&2
-            exit 1
-          fi
-          for dir in $modules; do
-            echo "::group::validate $dir"
-            terraform -chdir="$dir" init -backend=false -input=false
-            terraform -chdir="$dir" validate
-            echo "::endgroup::"
+          docker compose up -d db
+          trap 'docker compose down -v' EXIT
+          for attempt in {1..30}; do
+            if docker compose exec -T db pg_isready -U sifap -d sifap; then
+              exit 0
+            fi
+            sleep 2
           done
+          echo "PostgreSQL local não ficou saudável" >&2
+          exit 1
